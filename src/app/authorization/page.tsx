@@ -11,7 +11,7 @@ export default function Authorization() {
       <p className="text-2xl">You are not authorized on our website, to connect click on:</p>
       <Button
         onClick={() => connect({ connector: metaMask({useDeeplink: true, shouldShimWeb3: true, dappMetadata:{name: "blockchats", url: "https://blockchats.ru"}}) })}
-        variant="primary" className="text-xl bg-red-900">Connect Wallet</Button>
+        variant="primary" className="text-xl">Connect Wallet</Button>
     </div>
   )
 }
