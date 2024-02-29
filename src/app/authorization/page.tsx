@@ -12,7 +12,7 @@ export default function Authorization() {
       <p className="text-2xl">You are not authorized on our website, to connect click on:</p>
       <Button
         onClick={() => open({view: "Connect"})}
-        variant="primary" className="text-xl bg-red-900">Connect Wallet</Button>
+        variant="primary" className="text-xl">Connect Wallet</Button>
     </div>
   )
 }

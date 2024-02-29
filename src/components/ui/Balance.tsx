@@ -53,7 +53,7 @@ export const Balance = () => {
         <span>LINK</span>
       </p>
       <p>
-        Полученная валюта: <span>{availableTokens ? availableTokens : 0}</span>
+        Полученная валюта: <span>{availableTokens?.toString()}</span>
       </p>
     </div>
   );
