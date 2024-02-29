@@ -28,7 +28,7 @@ export const config = defaultWagmiConfig({
   storage: createStorage({
     storage: cookieStorage
   }),
-  enableWalletConnect: true, 
+  enableWalletConnect: true,
 })
 createWeb3Modal({
   wagmiConfig: config,
@@ -38,7 +38,10 @@ createWeb3Modal({
     1: {
       address: '0x70D61aED603c36b5EDa84bAfeDEBc24b6213e5c3',
     }
-  }
+  },
+  allWallets: 'HIDE',
+  excludeWalletIds: ['fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa'],
+  defaultChain: sepolia,
   })
 
 export const Web3ModalProvider = ({ children }: PropsWithChildren) => {
