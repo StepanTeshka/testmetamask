@@ -2,11 +2,10 @@
 
 import { abi } from "@/lib/abi";
 import { useEffect, useState } from "react";
-import { useAccount, useConfig } from "wagmi";
+import { useAccount, useConfig, useReadContract } from "wagmi";
 import {
   GetBalanceReturnType,
   getBalance,
-  readContract,
 } from "wagmi/actions";
 
 export const Balance = () => {
@@ -14,13 +13,17 @@ export const Balance = () => {
   const config = useConfig();
   const { address } = useAccount();
   const [balance, setBalance] = useState<GetBalanceReturnType>();
-  const [availableTokens, setAvailableTokens] = useState<any>();
+  const { data: availableTokens } = useReadContract({
+    abi: abi,
+    address: '0xbC9354aB2608B6341CCEb9bC36f835DF61A4F2DA',
+    functionName: "getAvailableTokens"
+  });
 
   useEffect(() => {
     async function getBalances() {
       try {
         const balanceResult = await getBalance(config, {
-          address: address || '0x',
+          address: address || "0x",
           token: testTokenAddress,
         });
         setBalance(balanceResult);
@@ -28,27 +31,12 @@ export const Balance = () => {
         console.error("Error:", error);
       }
     }
-
-    async function getAvailableTokens() {
-      try {
-        const result = await readContract(config, {
-          abi,
-          address: "0xbC9354aB2608B6341CCEb9bC36f835DF61A4F2DA",
-          functionName: "getAvailableTokens",
-        });
-        setAvailableTokens(result);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
     getBalances();
-    getAvailableTokens();
 
     const intervalId = setInterval(getBalances, 60000);
 
-    // Очищаем интервал при размонтировании компонента
     return () => clearInterval(intervalId);
-  }, [config, address]);
+  }, [address]);
 
   const dotIndex = balance?.formatted.indexOf(".") || 0;
 

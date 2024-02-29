@@ -4,7 +4,6 @@ import { Balance } from "@/components/ui/Balance";
 import Button from "@/components/ui/Button";
 import { abi } from "@/lib/abi";
 import { useState } from "react";
-import { GetContractErrorType } from "viem";
 import { BaseError, BaseErrorType, useChainId, useConfig } from "wagmi";
 import { writeContract } from "wagmi/actions";
 
@@ -15,6 +14,8 @@ export default function Home() {
   const [errorClaim, setErrorClaim] = useState<string>();
   const [errorSendTokens, setErrorSendTokens] = useState<string>();
 
+  const [answerSend, setAnswerSend] = useState();
+
   const onClaim = async () => {
     try {
       const result = await writeContract(config, {
@@ -23,10 +24,12 @@ export default function Home() {
         functionName: "claim",
       });
     } catch (e) {
-      const error = e as BaseError
+      const error = e as BaseError;
+      console.log(error);
       setErrorClaim(error.shortMessage.split("reason:")[1].trim());
     }
-  }
+  };
+
   const onSendTokens = async () => {
     try {
       const result = await writeContract(config, {
@@ -36,10 +39,10 @@ export default function Home() {
         args: [100],
       });
     } catch (e) {
-      const error = e as BaseError
+      const error = e as BaseError;
       setErrorSendTokens(error.shortMessage.split("reason:")[1].trim());
     }
-  }
+  };
 
   return (
     <div className="px-6">
@@ -49,11 +52,15 @@ export default function Home() {
           <Button variant="primary" onClick={() => onClaim()}>
             Claim
           </Button>
-          {errorClaim ? <p className="text-red-900">Ошибка: {errorClaim}</p> : null}
+          {errorClaim ? (
+            <p className="text-red-900">Ошибка: {errorClaim}</p>
+          ) : null}
           <Button variant="primary" onClick={() => onSendTokens()}>
             Pick up tokens
           </Button>
-          {errorSendTokens ? <p className="text-red-900">Ошибка: {errorSendTokens}</p> : null}
+          {errorSendTokens ? (
+            <p className="text-red-900">Ошибка: {errorSendTokens}</p>
+          ) : null}
         </div>
       ) : (
         <div>
